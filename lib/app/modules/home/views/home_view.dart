@@ -90,15 +90,15 @@ class HomeView extends GetView<HomeController> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
-                height: 300.h,
+                height: 340.h,
                 width: Get.width,
                 child: controller.middleRepo == null
                     ? const Center(child: CircularProgressIndicator())
                     : GridView.builder(
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          // childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 20,
+                          childAspectRatio: 2.5 / 2,
+                          crossAxisSpacing: 10,
                           mainAxisSpacing: 20,
                         ),
                         scrollDirection: Axis.horizontal,
@@ -144,36 +144,6 @@ class HomeView extends GetView<HomeController> {
                               ),
                             ),
                           );
-                          //   Column(
-                          //   children: [
-                          //     Container(
-                          //       color: Colors.pink[50],
-                          //       child: Column(
-                          //         crossAxisAlignment: CrossAxisAlignment.start,
-                          //         children: [
-                          //           Image.network(
-                          //             controller.middleRepo!.shopByCategory![index].image!,
-                          //             height: 100.h,
-                          //             width: 280.w,
-                          //             fit: BoxFit.cover,
-                          //           ),
-                          //           Padding(
-                          //             padding: EdgeInsets.only(left: 10.w),
-                          //             child: Text(
-                          //               controller.middleRepo!.shopByCategory![index].name!,
-                          //             ),
-                          //           ),
-                          //           Padding(
-                          //             padding: EdgeInsets.only(left: 10.w),
-                          //             child: const Text(
-                          //               "+Explore",
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ],
-                          // );
                         },
                       ),
               ),
@@ -342,15 +312,16 @@ class HomeView extends GetView<HomeController> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
-                height: 300.h,
+                height: 250.h,
                 width: Get.width,
                 child: controller.middleRepo == null
                     ? const Center(child: CircularProgressIndicator())
                     : GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 3 / 3.2,
                         ),
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
@@ -358,8 +329,6 @@ class HomeView extends GetView<HomeController> {
                         itemCount: controller.bottomRepo?.designOccasion?.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            width: 280.w,
-                            height: 130.h,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
