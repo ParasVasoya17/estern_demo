@@ -18,7 +18,7 @@ class HomeView extends GetView<HomeController> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('FABCURATE'),
-            centerTitle: false,
+            centerTitle: true,
             actions: [
               Row(
                 children: [
