@@ -5,6 +5,7 @@ import 'package:eastern_demo/app/models/middle_repo_model.dart';
 import 'package:eastern_demo/app/models/top_repo_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,8 @@ class HomeController extends GetxController {
   BottomRepoModel? bottomRepo;
   SliderImages? sliderImages;
   List<Widget> imgList = [];
-
+  List<Widget> unstitched = [];
+  Gallery3DController? imageController;
   @override
   void onInit() {
     getCategoryApi();
@@ -120,6 +122,12 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         middleRepo = MiddleRepoModel.fromJson(response.data);
+        imageController = Gallery3DController(
+          itemCount: middleRepo!.unstitched!.length,
+          autoLoop: true,
+          ellipseHeight: 0,
+          minScale: 0.4,
+        );
 
         print(topRepo?.message);
         update();

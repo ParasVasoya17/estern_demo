@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gallery_3d/gallery3d.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
@@ -20,7 +21,7 @@ class HomeView extends GetView<HomeController> {
               centerTitle: false,
               actions: [
                 Row(
-                  children: [Icon(Icons.search), 10.horizontalSpace, Icon(Icons.shopping_cart), 10.horizontalSpace],
+                  children: [const Icon(Icons.search), 10.horizontalSpace, const Icon(Icons.shopping_cart), 10.horizontalSpace],
                 ),
               ],
             ),
@@ -30,7 +31,7 @@ class HomeView extends GetView<HomeController> {
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   height: 100.h,
                   child: controller.topRepo == null
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : ListView.builder(
                           itemCount: controller.topRepo?.mainStickyMenu?.length,
                           shrinkWrap: true,
@@ -53,7 +54,7 @@ class HomeView extends GetView<HomeController> {
                                             width: 120.w,
                                             fit: BoxFit.cover,
                                           )
-                                        : Text("Not Available"),
+                                        : const Text("Not Available"),
                                     Text(
                                       controller.topRepo?.mainStickyMenu?[index].title != null ? controller.topRepo!.mainStickyMenu![index].title! : "",
                                       style: TextStyle(color: Colors.black, fontSize: 12.sp),
@@ -67,7 +68,7 @@ class HomeView extends GetView<HomeController> {
                 Container(
                   height: 200.h,
                   child: controller.imgList.isEmpty
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : CarouselSlider(
                           options: CarouselOptions(
                             autoPlay: true,
@@ -86,9 +87,9 @@ class HomeView extends GetView<HomeController> {
                   height: 300.h,
                   width: Get.width,
                   child: controller.middleRepo == null
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             // childAspectRatio: 3 / 2,
                             crossAxisSpacing: 20,
@@ -96,7 +97,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: controller.middleRepo?.shopByCategory?.length,
                           itemBuilder: (context, index) {
                             return Column(
@@ -120,7 +121,7 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(left: 10.w),
-                                        child: Text(
+                                        child: const Text(
                                           "+Explore",
                                         ),
                                       ),
@@ -141,9 +142,9 @@ class HomeView extends GetView<HomeController> {
                   height: 250.h,
                   width: Get.width,
                   child: controller.middleRepo == null
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             // childAspectRatio: 3 / 2,
                             crossAxisSpacing: 20,
@@ -151,7 +152,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: controller.middleRepo?.shopByFabric?.length,
                           itemBuilder: (context, index) {
                             return Container(
@@ -172,7 +173,7 @@ class HomeView extends GetView<HomeController> {
                                   child: Text(
                                     controller.middleRepo!.shopByFabric![index].name!,
                                     softWrap: true,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                     textAlign: TextAlign.center,
@@ -180,10 +181,53 @@ class HomeView extends GetView<HomeController> {
                             );
                           },
                         ),
-                )
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.w),
+                  child: Text("UnStitched", style: TextStyle(fontSize: 20.sp)),
+                ),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    height: 300.h,
+                    child: controller.middleRepo?.unstitched == null && controller.imageController == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : buildGallery3D(controller)),
               ],
             ));
       },
     );
+  }
+
+  Widget buildGallery3D(HomeController controller) {
+    return Gallery3D(
+        controller: controller.imageController!,
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        itemConfig: GalleryItemConfig(
+          width: 200.w,
+          height: 300.h,
+          radius: 0,
+        ),
+        width: Get.width,
+        height: 300.h,
+        isClip: true,
+        onItemChanged: (index) {},
+        onClickItem: (index) {},
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: NetworkImage(
+                controller.middleRepo!.unstitched![index].image!,
+              ),
+              fit: BoxFit.fill,
+            )),
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.all(10.w),
+              child: Text(controller.middleRepo!.unstitched![index].description!.toUpperCase(),
+                  style: TextStyle(color: Colors.white, fontSize: 15.sp), textAlign: TextAlign.center),
+            ),
+          );
+        });
   }
 }
