@@ -131,7 +131,6 @@ class HomeController extends GetxController {
 
         print(topRepo?.message);
         update();
-        // print(json.encode(response.data));
       } else {
         print(response.statusMessage);
       }
