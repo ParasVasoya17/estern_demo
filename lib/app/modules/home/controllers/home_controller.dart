@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:eastern_demo/app/models/bottom_repo_Model.dart';
 import 'package:eastern_demo/app/models/category_repo_model.dart';
@@ -16,8 +17,11 @@ class HomeController extends GetxController {
   BottomRepoModel? bottomRepo;
   SliderImages? sliderImages;
   List<Widget> imgList = [];
-  List<Widget> unstitched = [];
+  List<Widget> boutiqueSlider = [];
   Gallery3DController? imageController;
+  int current = 0;
+  final CarouselController sliderController = CarouselController();
+
   @override
   void onInit() {
     getCategoryApi();
@@ -42,7 +46,6 @@ class HomeController extends GetxController {
 
         print(category?.message);
         update();
-        // print(json.encode(response.data));
       } else {
         print(response.statusMessage);
       }
@@ -63,45 +66,64 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         topRepo = TopRepoModel.fromJson(response.data);
-        if (category != null) {
+        if (topRepo != null) {
           for (var i = 0; i < topRepo!.mainStickyMenu!.length; i++) {
-            sliderImages = topRepo!.mainStickyMenu![0].sliderImages![i];
             imgList.add(
-              Container(
-                  margin: const EdgeInsets.all(6.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(topRepo!.mainStickyMenu![0].sliderImages![i].image!),
-                        fit: BoxFit.cover,
-                      )),
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 60.h,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: EdgeInsets.all(10.w),
-                      child: Column(
-                        children: [
-                          Text(
-                            topRepo!.mainStickyMenu![0].sliderImages![i].title!,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                          Text(
-                            topRepo!.mainStickyMenu![0].sliderImages![i].cta!,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ],
+              Stack(
+                children: [
+                  Container(
+                    // margin: const EdgeInsets.all(6.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          image: NetworkImage(topRepo!.mainStickyMenu![0].sliderImages![i].image!),
+                          fit: BoxFit.cover,
+                        )),
+                    alignment: Alignment.bottomCenter,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0),
+                        ),
+                        color: Colors.pink[50],
                       ),
                     ),
-                  )),
+                  ),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 5.h),
+                        height: 60.h,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.w),
+                          child: Column(
+                            children: [
+                              Text(
+                                topRepo!.mainStickyMenu![0].sliderImages![i].title!,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                topRepo!.mainStickyMenu![0].sliderImages![i].cta!,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                ],
+              ),
             );
           }
           update();
         }
-        print("toprepo == ${topRepo?.message}");
         update();
-        // print(json.encode(response.data));
       } else {
         print(response.statusMessage);
       }
@@ -128,7 +150,55 @@ class HomeController extends GetxController {
           ellipseHeight: 0,
           minScale: 0.4,
         );
-
+        if (middleRepo != null) {
+          for (var i = 0; i < middleRepo!.boutiqueCollection!.length; i++) {
+            boutiqueSlider.add(
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                        image: NetworkImage(middleRepo!.boutiqueCollection![i].bannerImage!),
+                        fit: BoxFit.cover,
+                      )),
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 90.h, width: double.infinity,
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 15.0,
+                          spreadRadius: 5.0,
+                          offset: Offset(
+                            0.0,
+                            5.0,
+                          ),
+                        )
+                      ],
+                    ),
+                    // color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            middleRepo!.boutiqueCollection![i].name!,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          5.verticalSpace,
+                          const Text(
+                            "+Explore",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+            );
+          }
+          update();
+        }
         print(topRepo?.message);
         update();
       } else {
